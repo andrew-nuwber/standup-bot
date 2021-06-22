@@ -1,0 +1,15 @@
+name: Build
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+      - name: Install modules
+        run: yarn instal
+      - name: Lint
+        run: yarn run lint
+      - name: Build
+        run: yarn run build

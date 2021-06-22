@@ -2,6 +2,7 @@ build
 node_modules
 yarn-error.log
 .eslintrc.js
+.editorconfig
 .gitignore
 .git
 .env
