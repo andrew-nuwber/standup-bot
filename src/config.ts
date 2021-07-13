@@ -7,7 +7,7 @@ export const config = {
     apiKey: process.env.ZOOM_API_KEY!,
     apiSecret: process.env.ZOOM_API_SECRET!,
     meeting: {
-      alternativeHosts: process.env.MEETING_ALTERNATIVE_HOSTS,
+      alternativeHosts: process.env.MEETING_ALTERNATIVE_HOSTS?.split(','),
     }
   },
   slack: {

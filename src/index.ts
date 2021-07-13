@@ -13,7 +13,8 @@ schedule.scheduleJob(config.schedule, async () => {
   const meeting = await zoom.createMeeting({
     topic: 'Standup',
     type: MeetingTypes.SCHEDULED,
-    startTime: DateTime.local().plus({second: 1})
+    startTime: DateTime.local().plus({second: 1}),
+    alternativeHosts: config.zoom.meeting.alternativeHosts,
   });
 
   await slack.chat.postMessage({
