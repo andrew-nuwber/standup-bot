@@ -14,7 +14,6 @@ schedule.scheduleJob(config.schedule, async () => {
     topic: 'Standup',
     type: MeetingTypes.SCHEDULED,
     startTime: DateTime.local().plus({second: 1}),
-    alternativeHosts: config.zoom.meeting.alternativeHosts,
   });
 
   await slack.chat.postMessage({

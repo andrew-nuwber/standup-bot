@@ -5,5 +5,4 @@ export interface MeetingParams {
   topic: string;
   type: MeetingTypes;
   startTime?: DateTime,
-  alternativeHosts?: string[],
 }

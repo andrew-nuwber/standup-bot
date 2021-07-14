@@ -36,8 +36,8 @@ export class Zoom {
           waiting_room: false,
           additional_data_center_regions: ['EU'],
           registrants_email_notification: false,
+          registrants_confirmation_email: false,
           alternative_hosts_email_notification: false,
-          alternative_hosts: params.alternativeHosts?.join(','),
         }
       }
     }).json<Meeting>();
