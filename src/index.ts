@@ -12,7 +12,7 @@ const zoom = new Zoom(config.zoom.apiKey, config.zoom.apiSecret);
 schedule.scheduleJob(config.schedule, createAndSendMeetingLink);
 
 async function createAndSendMeetingLink() {
-  console.info('Zoom creating started');
+  console.info('Zoom meeting creating started');
 
   const meeting = await zoom.createMeeting({
     topic: 'Standup',

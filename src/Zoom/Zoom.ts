@@ -14,7 +14,8 @@ export class Zoom {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-      }
+      },
+      timeout: 1000,
     });
   }
 
