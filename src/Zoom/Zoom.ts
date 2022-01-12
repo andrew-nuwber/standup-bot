@@ -20,27 +20,31 @@ export class Zoom {
   async createMeeting(params: MeetingParams): Promise<Meeting> {
     const token = await this.getJwtToken();
 
-    return this.got.post('users/me/meetings', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      json: {
-        topic: params.topic,
-        type: params.type,
-        start_time: params.startTime?.toISO(),
-        timezone: params.startTime?.zoneName,
-        settings: {
-          host_video: true,
-          participant_video: true,
-          join_before_host: true,
-          waiting_room: false,
-          additional_data_center_regions: ['EU'],
-          registrants_email_notification: false,
-          registrants_confirmation_email: false,
-          alternative_hosts_email_notification: false,
+    try {
+      return await this.got.post('users/me/meetings', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        json: {
+          topic: params.topic,
+          type: params.type,
+          start_time: params.startTime?.toISO(),
+          timezone: params.startTime?.zoneName,
+          settings: {
+            host_video: true,
+            participant_video: true,
+            join_before_host: true,
+            waiting_room: false,
+            additional_data_center_regions: ['EU'],
+            registrants_email_notification: false,
+            registrants_confirmation_email: false,
+            alternative_hosts_email_notification: false,
+          }
         }
-      }
-    }).json<Meeting>();
+      }).json<Meeting>();
+    } catch (e) {
+      throw new Error(`Error while creating Zoom meeting: ${e?.response?.body || e.message}`);
+    }
   }
 
   getJwtToken(): Promise<string> {
