@@ -1,8 +1,9 @@
-import got, {Got} from 'got';
+import got, {Got, HTTPError} from 'got';
 import * as jwt from 'jsonwebtoken';
 import {DateTime} from 'luxon';
 import {MeetingParams} from 'app/Zoom/interfaces/MeetingParams';
 import {Meeting} from 'app/Zoom/interfaces/Meeting';
+import {RequestError} from 'got/dist/source/core';
 
 export class Zoom {
   private readonly got: Got;
@@ -43,7 +44,11 @@ export class Zoom {
         }
       }).json<Meeting>();
     } catch (e) {
-      throw new Error(`Error while creating Zoom meeting: ${e?.response?.body || e.message}`);
+      if (e instanceof RequestError) {
+        throw new Error(`Request error while creating Zoom meeting: ${e.response?.body || e.message}`);
+      }
+
+      throw e;
     }
   }
 
