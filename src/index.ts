@@ -7,7 +7,7 @@ import {DateTime} from 'luxon';
 import {WebClient as Slack} from '@slack/web-api';
 
 const slack = new Slack(config.slack.botToken);
-const zoom = new Zoom(config.zoom.apiKey, config.zoom.apiSecret);
+const zoom = new Zoom(config.zoom.accountId, config.zoom.clientId, config.zoom.clientSecret);
 
 schedule.scheduleJob(config.schedule, createAndSendMeetingLink);
 

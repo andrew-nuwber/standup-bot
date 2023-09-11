@@ -1,14 +1,12 @@
-import got, {Got, HTTPError} from 'got';
-import * as jwt from 'jsonwebtoken';
-import {DateTime} from 'luxon';
+import got, {Got, RequestError} from 'got';
 import {MeetingParams} from 'app/Zoom/interfaces/MeetingParams';
 import {Meeting} from 'app/Zoom/interfaces/Meeting';
-import {RequestError} from 'got/dist/source/core';
+import {Credentials} from 'app/Zoom/interfaces/Credentials';
 
 export class Zoom {
   private readonly got: Got;
 
-  constructor(private apiKey: string, private apiSecret: string) {
+  constructor(private accountId: string, private clientId: string, private clientSecret: string) {
     this.got = got.extend({
       prefixUrl: 'https://api.zoom.us/v2/',
       headers: {
@@ -20,7 +18,7 @@ export class Zoom {
   }
 
   async createMeeting(params: MeetingParams): Promise<Meeting> {
-    const token = await this.getJwtToken();
+    const token = await this.getAuthToken();
 
     try {
       return await this.got.post('users/me/meetings', {
@@ -53,19 +51,12 @@ export class Zoom {
     }
   }
 
-  getJwtToken(): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const payload = {
-        iss: this.apiKey,
-        exp: DateTime.now().plus({second: 10}).toMillis()
-      };
+  async getAuthToken(): Promise<string> {
+    const response = await got.post('https://zoom.us/oauth/token', {
+      form: {grant_type: 'account_credentials', account_id: this.accountId},
+      headers: {Authorization: `Basic ${btoa(`${this.clientId}:${this.clientSecret}`)}`},
+    }).json<Credentials>();
 
-      return jwt.sign(
-        payload,
-        this.apiSecret,
-        (err, token) => err ? reject(err) : resolve(token!)
-      );
-    });
-
+    return response.access_token;
   }
 }
